@@ -4,7 +4,6 @@ use 5.008;
 use Moose;
 with qw/Dist::Zilla::Role::FileGatherer/;
 use Devel::PPPort;
-use Symbol;
 
 my $content;
 open PPPORT_FILE, '>', \$content or confess "Couldn't open scalar filehandle";
