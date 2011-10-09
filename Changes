@@ -1,6 +1,8 @@
 Revision history for Dist-Zilla-Plugin-PPPort
 
 {{$NEXT}}
+
+0.003     2011-10-09 13:57:58 Europe/Amsterdam
           Allow user to set the filename for ppport file
 
 0.002     2011-10-09 12:45:42 Europe/Amsterdam
