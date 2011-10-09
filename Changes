@@ -1,6 +1,7 @@
 Revision history for Dist-Zilla-Plugin-PPPort
 
 {{$NEXT}}
+          Allow user to set the filename for ppport file
 
 0.002     2011-10-09 12:45:42 Europe/Amsterdam
           Add corpus to no_index
