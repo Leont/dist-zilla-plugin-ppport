@@ -2,6 +2,9 @@ Revision history for Dist-Zilla-Plugin-PPPort
 
 {{$NEXT}}
 
+0.004     2011-10-14 18:05:48 Europe/Amsterdam
+          Fixed missing make_immutable call
+
 0.003     2011-10-09 13:57:58 Europe/Amsterdam
           Allow user to set the filename for ppport file
 
