@@ -3,6 +3,7 @@ package Dist::Zilla::Plugin::PPPort;
 use 5.008;
 use Moose;
 with qw/Dist::Zilla::Role::FileGatherer/;
+use MooseX::Types::Path::Class qw(File);
 use Devel::PPPort;
 
 my $content;
@@ -15,13 +16,14 @@ my $content;
 
 has filename => (
 	is => 'ro',
-	isa => 'Str',
-	default => 'ppport.h'
+	isa => File,
+	default => 'ppport.h',
+	coerce => 1,
 );
 
 sub gather_files {
 	my $self = shift;
-	$self->add_file(Dist::Zilla::File::InMemory->new(name => $self->filename, content => $content));
+	$self->add_file(Dist::Zilla::File::InMemory->new(name => $self->filename->stringify, content => $content));
 	return;
 }
 
