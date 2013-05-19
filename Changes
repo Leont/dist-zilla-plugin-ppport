@@ -1,6 +1,8 @@
 Revision history for Dist-Zilla-Plugin-PPPort
 
 {{$NEXT}}
+
+0.005     2013-05-19 17:06:07 Europe/Amsterdam
           Get rid of Test::Kwalitee dependency
 
 0.004     2011-10-14 18:05:48 Europe/Amsterdam
