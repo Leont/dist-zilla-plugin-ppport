@@ -1,6 +1,7 @@
 Revision history for Dist-Zilla-Plugin-PPPort
 
 {{$NEXT}}
+          Get rid of Test::Kwalitee dependency
 
 0.004     2011-10-14 18:05:48 Europe/Amsterdam
           Fixed missing make_immutable call
