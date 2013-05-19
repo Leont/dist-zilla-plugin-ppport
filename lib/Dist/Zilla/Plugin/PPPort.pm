@@ -11,7 +11,7 @@ my $content;
 {
 	local *PPPORT_FILE;
 	open PPPORT_FILE, '>', \$content or confess "Couldn't open scalar filehandle";
-	Devel::PPPort::WriteFile("&=".__PACKAGE__."::PPPORT_FILE");
+	Devel::PPPort::WriteFile("&=Dist::Zilla::Plugin::PPPort::PPPORT_FILE");
 	close PPPORT_FILE;
 }
 
