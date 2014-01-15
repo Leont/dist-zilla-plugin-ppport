@@ -1,6 +1,7 @@
 Revision history for Dist-Zilla-Plugin-PPPort
 
 {{$NEXT}}
+          Use Stringlike type instead of Path::Class type for filename
 
 0.005     2013-05-19 17:06:07 Europe/Amsterdam
           Get rid of Test::Kwalitee dependency

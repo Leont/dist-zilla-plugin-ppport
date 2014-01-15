@@ -4,7 +4,7 @@ use 5.008;
 use Moose;
 with qw/Dist::Zilla::Role::FileGatherer/;
 use MooseX::Types::Perl qw(VersionObject);
-use MooseX::Types::Path::Class qw(File);
+use MooseX::Types::Stringlike 'Stringlike';
 use Devel::PPPort;
 
 my $content;
@@ -16,23 +16,23 @@ my $content;
 }
 
 has filename => (
-	is => 'ro',
-	isa => File,
+	is      => 'ro',
+	isa     => Stringlike,
+	coerce  => 1,
 	default => 'ppport.h',
-	coerce => 1,
 );
 
 has version => (
-	is => 'ro',
-	isa => VersionObject,
+	is      => 'ro',
+	isa     => VersionObject,
 	default => 0,
-	coerce => 1,
+	coerce  => 1,
 );
 
 sub gather_files {
 	my $self = shift;
 	Devel::PPPort->VERSION($self->version) if $self->version;
-	$self->add_file(Dist::Zilla::File::InMemory->new(name => $self->filename->stringify, content => $content));
+	$self->add_file(Dist::Zilla::File::InMemory->new(name => $self->filename, content => $content));
 	return;
 }
 
