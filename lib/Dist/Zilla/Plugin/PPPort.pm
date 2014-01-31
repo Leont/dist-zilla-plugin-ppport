@@ -3,7 +3,7 @@ package Dist::Zilla::Plugin::PPPort;
 use 5.008;
 use Moose;
 with qw/Dist::Zilla::Role::FileGatherer/;
-use MooseX::Types::Perl qw(VersionObject);
+use MooseX::Types::Perl qw(StrictVersionStr);
 use MooseX::Types::Stringlike 'Stringlike';
 use Devel::PPPort;
 
@@ -24,9 +24,8 @@ has filename => (
 
 has version => (
 	is      => 'ro',
-	isa     => VersionObject,
+	isa     => StrictVersionStr,
 	default => 0,
-	coerce  => 1,
 );
 
 sub gather_files {
