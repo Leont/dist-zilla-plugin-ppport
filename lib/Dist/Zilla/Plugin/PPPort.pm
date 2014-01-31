@@ -31,7 +31,7 @@ has version => (
 sub gather_files {
 	my $self = shift;
 	Devel::PPPort->VERSION($self->version) if $self->version;
-	$self->add_file(Dist::Zilla::File::InMemory->new(name => $self->filename, content => $content));
+	$self->add_file(Dist::Zilla::File::InMemory->new(name => $self->filename, content => $content, encoding => 'ascii'));
 	return;
 }
 

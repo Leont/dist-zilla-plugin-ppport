@@ -1,6 +1,7 @@
 Revision history for Dist-Zilla-Plugin-PPPort
 
 {{$NEXT}}
+          Add ascii encoding for ppport.h
           Use Stringlike type instead of Path::Class type for filename
           Use StrictVersionString instead of VersionObject for version
 
