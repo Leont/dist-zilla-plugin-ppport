@@ -41,8 +41,6 @@ no Moose;
 
 1;
 
-__END__
-
 #ABSTRACT: PPPort for Dist::Zilla
 
 =head1 SYNOPSIS
