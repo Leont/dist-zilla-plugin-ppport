@@ -3,9 +3,11 @@ package Dist::Zilla::Plugin::PPPort;
 use 5.008;
 use Moose;
 with qw/Dist::Zilla::Role::FileGatherer/;
+use Moose::Util::TypeConstraints 'enum';
 use MooseX::Types::Perl qw(StrictVersionStr);
 use MooseX::Types::Stringlike 'Stringlike';
 use Devel::PPPort;
+use File::Spec::Functions 'catdir';
 
 my $content;
 {
@@ -15,11 +17,30 @@ my $content;
 	close PPPORT_FILE;
 }
 
+has style => (
+	is  => 'ro',
+	isa => enum(['MakeMaker', 'ModuleBuild']),
+	default => 'MakeMaker',
+);
+
 has filename => (
 	is      => 'ro',
 	isa     => Stringlike,
+	lazy    => 1,
 	coerce  => 1,
-	default => 'ppport.h',
+	default => sub {
+		my $self = shift;
+		if ($self->style eq 'MakeMaker') {
+			return 'ppport.h';
+		}
+		elsif ($self->style eq 'ModuleBuild') {
+			my @module_parts = split /-/, $self->zilla->name;
+			return catdir('lib', @module_parts[0 .. $#module_parts - 1], 'ppport.h');
+		}
+		else {
+			confess 'Invalid style for XS file generation';
+		}
+	}
 );
 
 has version => (

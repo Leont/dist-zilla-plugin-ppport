@@ -1,6 +1,7 @@
 Revision history for Dist-Zilla-Plugin-PPPort
 
 {{$NEXT}}
+          Support Module::Build style ppport paths
 
 0.006     2014-02-13 02:32:32CET+0100 Europe/Amsterdam
           Add ascii encoding for ppport.h
