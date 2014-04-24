@@ -1,21 +1,12 @@
 package Dist::Zilla::Plugin::PPPort;
 
-use 5.008;
 use Moose;
 with qw/Dist::Zilla::Role::FileGatherer/;
 use Moose::Util::TypeConstraints 'enum';
 use MooseX::Types::Perl qw(StrictVersionStr);
 use MooseX::Types::Stringlike 'Stringlike';
-use Devel::PPPort;
+use Devel::PPPort 3.23;
 use File::Spec::Functions 'catdir';
-
-my $content;
-{
-	local *PPPORT_FILE;
-	open PPPORT_FILE, '>', \$content or confess "Couldn't open scalar filehandle";
-	Devel::PPPort::WriteFile("&=Dist::Zilla::Plugin::PPPort::PPPORT_FILE");
-	close PPPORT_FILE;
-}
 
 has style => (
 	is  => 'ro',
@@ -46,13 +37,17 @@ has filename => (
 has version => (
 	is      => 'ro',
 	isa     => StrictVersionStr,
-	default => 0,
+	default => '3.23',
 );
 
 sub gather_files {
 	my $self = shift;
-	Devel::PPPort->VERSION($self->version) if $self->version;
-	$self->add_file(Dist::Zilla::File::InMemory->new(name => $self->filename, content => $content, encoding => 'ascii'));
+	Devel::PPPort->VERSION($self->version);
+	$self->add_file(Dist::Zilla::File::InMemory->new(
+		name => $self->filename,
+		content => Devel::PPPort::GetFileContents($self->filename),
+		encoding => 'ascii',
+	));
 	return;
 }
 
