@@ -1,7 +1,7 @@
 package Dist::Zilla::Plugin::PPPort;
 
 use Moose;
-with qw/Dist::Zilla::Role::FileGatherer/;
+with qw/Dist::Zilla::Role::FileGatherer Dist::Zilla::Role::PrereqSource/;
 use Moose::Util::TypeConstraints 'enum';
 use MooseX::Types::Perl qw(StrictVersionStr);
 use MooseX::Types::Stringlike 'Stringlike';
@@ -51,6 +51,12 @@ sub gather_files {
 	return;
 }
 
+sub register_prereqs {
+    my $self = shift;
+    $self->zilla->register_prereqs({ phase => 'develop' }, 'Devel::PPPort' => $self->version);
+	return;
+}
+
 __PACKAGE__->meta->make_immutable;
 
 no Moose;
@@ -72,4 +78,5 @@ This module adds a PPPort file to your distribution. By default it's called C<pp
 
 =for Pod::Coverage
 gather_files
+register_prereqs
 =end
