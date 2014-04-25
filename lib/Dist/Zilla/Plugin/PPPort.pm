@@ -76,6 +76,18 @@ In your dist.ini
 
 This module adds a PPPort file to your distribution. By default it's called C<ppport.h>, but you can name differently.
 
+=attr style
+
+This affects the default value for the C<filename> attribute. It must be either C<MakeMaker> or C<ModuleBuild>, the former being the default.
+
+=attr filename
+
+The filename of the ppport file. It defaults to F<ppport.h> if C<style> is C<MakeMaker>, and something module specific if C<style> is C<Module::Build>.
+
+=attr version
+
+This describes the minimal version of Devel::PPPort required for this module. It currently defaults to C<3.23>.
+
 =for Pod::Coverage
 gather_files
 register_prereqs
