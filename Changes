@@ -1,6 +1,8 @@
 Revision history for Dist-Zilla-Plugin-PPPort
 
 {{$NEXT}}
+
+0.007     2014-04-26 00:13:51CEST+0200 Europe/Amsterdam
           Support Module::Build style ppport paths
           Add a develop requirement on Devel::PPPort
 
