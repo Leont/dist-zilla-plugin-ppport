@@ -4,7 +4,7 @@ Revision history for Dist-Zilla-Plugin-PPPort
 
 0.007     2014-04-26 00:13:51CEST+0200 Europe/Amsterdam
           Support Module::Build style ppport paths
-          Add a develop requirement on Devel::PPPort
+          Add a runtime requirement on Devel::PPPort
 
 0.006     2014-02-13 02:32:32CET+0100 Europe/Amsterdam
           Add ascii encoding for ppport.h
