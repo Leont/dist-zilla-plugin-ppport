@@ -1,4 +1,5 @@
 package Dist::Zilla::Plugin::PPPort;
+# vi:noet:sts=2:sw=2:ts=2
 
 use Moose;
 with qw/Dist::Zilla::Role::FileGatherer Dist::Zilla::Role::PrereqSource/;
@@ -52,8 +53,8 @@ sub gather_files {
 }
 
 sub register_prereqs {
-    my $self = shift;
-    $self->zilla->register_prereqs({ phase => 'develop' }, 'Devel::PPPort' => $self->version);
+	my $self = shift;
+	$self->zilla->register_prereqs({ phase => 'develop' }, 'Devel::PPPort' => $self->version);
 	return;
 }
 

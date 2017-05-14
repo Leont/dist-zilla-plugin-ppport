@@ -1,4 +1,5 @@
 #!perl
+# vi:noet:sts=2:sw=2:ts=2
 use strict;
 use warnings;
 
@@ -9,14 +10,14 @@ use Path::Class;
 
 {
 	my $tzil = Builder->from_config(
-	  { dist_root => 'corpus/' },
-	  {
-		  add_files => {
-			  'source/dist.ini' => simple_ini(
-				  qw/@Basic PkgVersion PPPort/
-			  ),
-		  },
-	  },
+		{ dist_root => 'corpus/' },
+		{
+			add_files => {
+				'source/dist.ini' => simple_ini(
+					qw/@Basic PkgVersion PPPort/,
+				),
+			},
+		},
 	);
 
 	$tzil->build;
@@ -29,18 +30,18 @@ use Path::Class;
 
 {
 	my $tzil = Builder->from_config(
-	  {
-		  dist_root => 'corpus/',
-	  },
-	  {
-		  add_files => {
-			  'source/dist.ini' => simple_ini(
-				  { name => 'Foo-Bar' },
-				  qw/@Basic PkgVersion/,
-				  [ PPPort => { style => 'ModuleBuild' } ],
-			  ),
-		  },
-	  },
+		{
+			dist_root => 'corpus/',
+		},
+		{
+			add_files => {
+				'source/dist.ini' => simple_ini(
+					{ name => 'Foo-Bar' },
+					qw/@Basic PkgVersion/,
+					[ PPPort => { style => 'ModuleBuild' } ],
+				),
+			},
+		},
 	);
 
 	$tzil->build;
