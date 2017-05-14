@@ -14,8 +14,11 @@ use Path::Class;
 		{
 			add_files => {
 				'source/dist.ini' => simple_ini(
-					qw/@Basic PkgVersion PPPort/,
+					'GatherDir',
+					'PPPort',
+					[ Prereqs => { perl => '5.008' } ],
 				),
+				'source/foo.h' => '#!include <stdio.h>',
 			},
 		},
 	);
@@ -26,6 +29,8 @@ use Path::Class;
 
 	ok -e $dir->file('ppport.h');
 	ok -s $dir->file('ppport.h');
+	diag 'got log messages: ', explain $tzil->log_messages
+		if not Test::Builder->new->is_passing;
 }
 
 {
@@ -37,9 +42,10 @@ use Path::Class;
 			add_files => {
 				'source/dist.ini' => simple_ini(
 					{ name => 'Foo-Bar' },
-					qw/@Basic PkgVersion/,
+					'GatherDir',
 					[ PPPort => { style => 'ModuleBuild' } ],
 				),
+				'source/foo.h' => '#!include <stdio.h>',
 			},
 		},
 	);
@@ -50,6 +56,9 @@ use Path::Class;
 
 	ok -e $dir->file('lib/Foo/ppport.h');
 	ok -s $dir->file('lib/Foo/ppport.h');
+
+	diag 'got log messages: ', explain $tzil->log_messages
+		if not Test::Builder->new->is_passing;
 }
 
 done_testing;
