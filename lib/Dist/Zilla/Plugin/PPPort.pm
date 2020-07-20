@@ -42,13 +42,30 @@ has version => (
 	default => '3.23',
 );
 
+has body => (
+	init_arg => undef,
+	is       => 'ro',
+	isa      => Stringlike,
+	lazy     => 1,
+	builder  => '_body_builder',
+);
+
+sub _body_builder {
+	my $self = shift;
+
+	Devel::PPPort->VERSION($self->version);
+
+	my $text = Devel::PPPort::GetFileContents($self->filename);
+	return $text;
+}
+
 sub gather_files {
 	my $self = shift;
-	Devel::PPPort->VERSION($self->version);
+
 	require Dist::Zilla::File::InMemory;
 	$self->add_file(Dist::Zilla::File::InMemory->new(
 		name => $self->filename,
-		content => Devel::PPPort::GetFileContents($self->filename),
+		content => $self->body,
 		encoding => 'ascii',
 	));
 	return;
