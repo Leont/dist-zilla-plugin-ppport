@@ -9,6 +9,7 @@ use MooseX::Types::Stringlike 'Stringlike';
 use Devel::PPPort 3.23;
 use File::Spec::Functions 'catdir';
 use File::pushd 'pushd';
+use Capture::Tiny 'capture';
 
 has style => (
 	is  => 'ro',
@@ -56,6 +57,12 @@ sub _body_builder {
 	Devel::PPPort->VERSION($self->version);
 
 	my $text = Devel::PPPort::GetFileContents($self->filename);
+	my($copy) = $text =~ /^=head\d\s+COPYRIGHT\s*^(.*?)^=\w+/ms;
+	$copy =~ s/^(?=\S+)/		/gms;
+	$text =~ s/^[ \t]+Do NOT edit.*?(?=^-)/$copy/ms;
+	$text =~ s/\n^SKIP.*^__DATA__\n//ms;
+	$text =~ s{ \A .*? (?=/\*) }{}msgx;
+
 	return $text;
 }
 
@@ -71,6 +78,8 @@ sub gather_files {
 	return;
 }
 
+my $counter = 0;
+
 sub after_build {
 	my ($self, $args) = @_;
 	my $build_root = $args->{build_root};
@@ -83,14 +92,13 @@ sub after_build {
 		->merged_requirements([ qw(configure build runtime test) ], ['requires'])
 		->requirements_for_module('perl') || '5.006';
 
-	if ($self->logger->get_debug) {
-		chomp(my $out = `$^X $filename --compat-version=$perl_prereq`);
-		$self->log_debug($out) if $out;
-	}
-	else {
-		chomp(my $out = `$^X $filename --compat-version=$perl_prereq --quiet`);
-		$self->log_debug($out) if $out;
-	}
+	my $out = capture {
+		my $code = sprintf "package PPPort%s;\nno strict;\nno warnings;\n%s", $counter++, Devel::PPPort::GetFileContents($self->filename);
+		local @ARGV = $self->logger->get_debug ? "--compat-version=$perl_prereq" : ("--compat-version=$perl_prereq", "--quiet");
+		local $0 = $self->filename;
+		eval $code or die $@;
+	};
+	$self->log_debug($out) if $out;
 }
 
 sub register_prereqs {
