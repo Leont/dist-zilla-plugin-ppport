@@ -2,8 +2,9 @@ package Dist::Zilla::Plugin::PPPort;
 
 # vi:noet:sts=2:sw=2:ts=2
 use Moose;
-with qw/Dist::Zilla::Role::FileGatherer Dist::Zilla::Role::PrereqSource Dist::Zilla::Role::AfterBuild/;
+with qw/Dist::Zilla::Role::FileGatherer Dist::Zilla::Role::PrereqSource Dist::Zilla::Role::AfterBuild Dist::Zilla::Role::FilePruner/;
 use Moose::Util::TypeConstraints 'enum';
+use MooseX::Types::Moose 'Int';
 use MooseX::Types::Perl qw(StrictVersionStr);
 use MooseX::Types::Stringlike 'Stringlike';
 use Devel::PPPort 3.23;
@@ -40,6 +41,12 @@ has version => (
 	is      => 'ro',
 	isa     => StrictVersionStr,
 	default => '3.23',
+);
+
+has override => (
+	is      => 'ro',
+	isa     => Int,
+	default => 0,
 );
 
 sub gather_files {
@@ -82,6 +89,20 @@ sub register_prereqs {
 	return;
 }
 
+sub prune_files {
+	my $self = shift;
+	return unless $self->override;
+
+	my @files = @{ $self->zilla->files };
+	my $filename = $self->filename;
+	for my $file (@files) {
+		if ($file->name eq $filename) {
+			$self->zilla->prune_file($file);
+			last;
+		}
+	}
+}
+
 __PACKAGE__->meta->make_immutable;
 
 no Moose;
@@ -113,8 +134,13 @@ The filename of the ppport file. It defaults to F<ppport.h> if C<style> is C<Mak
 
 This describes the minimal version of Devel::PPPort required for this module. It currently defaults to C<3.23>.
 
+=attr override
+
+If this is set to a positive value, the module will prune any preexisting $filename.
+
 =for Pod::Coverage
 gather_files
 register_prereqs
 after_build
+prune_files
 =end
