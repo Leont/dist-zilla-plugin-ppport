@@ -96,10 +96,7 @@ sub prune_files {
 	my @files = @{ $self->zilla->files };
 	my $filename = $self->filename;
 	for my $file (@files) {
-		if ($file->name eq $filename) {
-			$self->zilla->prune_file($file);
-			last;
-		}
+		$self->zilla->prune_file($file) if $file->name eq $filename and $file->added_by !~ __PACKAGE__;
 	}
 }
 
