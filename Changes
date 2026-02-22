@@ -1,6 +1,7 @@
 Revision history for Dist-Zilla-Plugin-PPPort
 
 {{$NEXT}}
+          - Use signatures
 
 0.010     2022-08-29 16:27:59+02:00 Europe/Amsterdam
           - Never remove own ppport.h file on override

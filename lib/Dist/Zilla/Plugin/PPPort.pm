@@ -3,6 +3,9 @@ package Dist::Zilla::Plugin::PPPort;
 # vi:noet:sts=4:sw=4:ts=4
 use Moose;
 with qw/Dist::Zilla::Role::FileGatherer Dist::Zilla::Role::PrereqSource Dist::Zilla::Role::AfterBuild Dist::Zilla::Role::FilePruner/;
+
+use experimental 'signatures';
+
 use Moose::Util::TypeConstraints 'enum';
 use MooseX::Types::Moose 'Int';
 use MooseX::Types::Perl qw(StrictVersionStr);
@@ -22,8 +25,7 @@ has filename => (
 	isa     => Stringlike,
 	lazy    => 1,
 	coerce  => 1,
-	default => sub {
-		my $self = shift;
+	default => sub($self) {
 		if ($self->style eq 'MakeMaker') {
 			return 'ppport.h';
 		}
@@ -49,8 +51,7 @@ has override => (
 	default => 0,
 );
 
-sub gather_files {
-	my $self = shift;
+sub gather_files($self) {
 	Devel::PPPort->VERSION($self->version);
 	require Dist::Zilla::File::InMemory;
 	$self->add_file(Dist::Zilla::File::InMemory->new(
@@ -61,8 +62,7 @@ sub gather_files {
 	return;
 }
 
-sub after_build {
-	my ($self, $args) = @_;
+sub after_build($self, $arg) {
 	my $build_root = $args->{build_root};
 
 	my $wd = pushd $build_root;
@@ -83,14 +83,12 @@ sub after_build {
 	}
 }
 
-sub register_prereqs {
-	my $self = shift;
+sub register_prereqs($self) {
 	$self->zilla->register_prereqs({ phase => 'develop' }, 'Devel::PPPort' => $self->version);
 	return;
 }
 
-sub prune_files {
-	my $self = shift;
+sub prune_files($self) {
 	return unless $self->override;
 
 	my @files = @{ $self->zilla->files };
