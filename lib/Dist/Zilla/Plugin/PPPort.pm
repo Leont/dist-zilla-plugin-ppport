@@ -3,6 +3,7 @@ package Dist::Zilla::Plugin::PPPort;
 # vi:noet:sts=4:sw=4:ts=4
 use Moose;
 with qw/Dist::Zilla::Role::FileGatherer Dist::Zilla::Role::PrereqSource Dist::Zilla::Role::AfterBuild Dist::Zilla::Role::FilePruner/;
+use namespace::autoclean;
 
 use experimental 'signatures';
 
@@ -99,8 +100,6 @@ sub prune_files($self) {
 }
 
 __PACKAGE__->meta->make_immutable;
-
-no Moose;
 
 1;
 
