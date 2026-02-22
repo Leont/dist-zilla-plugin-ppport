@@ -14,6 +14,7 @@ use MooseX::Types::Stringlike 'Stringlike';
 use Devel::PPPort 3.23;
 use File::Spec::Functions 'catdir';
 use File::pushd 'pushd';
+use List::Util 'any';
 
 has style => (
 	is  => 'ro',
@@ -63,7 +64,15 @@ sub gather_files($self) {
 	return;
 }
 
-sub after_build($self, $arg) {
+sub after_build($self, $args) {
+	my @all_files = map {$_->name } @{ $self->zilla->files };
+	my @files;
+	my $main_module_xs = $self->zilla->main_module =~ s/.*:://r . ".xs";
+	push @files, $main_module_xs if any { $_ eq $main_module_xs } @all_files;
+	push @files, grep { $_ =~ m{ ^ lib/ .* \.xs $ }x } @all_files;
+
+	return unless @files;
+
 	my $build_root = $args->{build_root};
 
 	my $wd = pushd $build_root;
@@ -75,12 +84,12 @@ sub after_build($self, $arg) {
 		->requirements_for_module('perl') || '5.006';
 
 	if ($self->logger->get_debug) {
-		chomp(my $out = `$^X $filename --compat-version=$perl_prereq`);
+		chomp(my $out = `$^X $filename --compat-version=$perl_prereq @files`);
 		$self->log_debug($out) if $out;
 	}
 	else {
-		chomp(my $out = `$^X $filename --compat-version=$perl_prereq --quiet`);
-		$self->log_debug($out) if $out;
+		chomp(my $out = `$^X $filename --compat-version=$perl_prereq --quiet @files`);
+		$self->log($out) if $out;
 	}
 }
 
