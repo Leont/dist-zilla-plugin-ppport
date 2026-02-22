@@ -1,6 +1,6 @@
 package Dist::Zilla::Plugin::PPPort;
 
-# vi:noet:sts=2:sw=2:ts=2
+# vi:noet:sts=4:sw=4:ts=4
 use Moose;
 with qw/Dist::Zilla::Role::FileGatherer Dist::Zilla::Role::PrereqSource Dist::Zilla::Role::AfterBuild Dist::Zilla::Role::FilePruner/;
 use Moose::Util::TypeConstraints 'enum';
