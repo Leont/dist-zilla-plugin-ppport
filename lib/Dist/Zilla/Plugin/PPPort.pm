@@ -84,11 +84,11 @@ sub after_build($self, $args) {
 		->requirements_for_module('perl') || '5.006';
 
 	if ($self->logger->get_debug) {
-		chomp(my $out = `$^X $filename --compat-version=$perl_prereq @files`);
+		chomp(my $out = `$^X $filename --compat-version=$perl_prereq --cplusplus @files`);
 		$self->log_debug($out) if $out;
 	}
 	else {
-		chomp(my $out = `$^X $filename --compat-version=$perl_prereq --quiet @files`);
+		chomp(my $out = `$^X $filename --compat-version=$perl_prereq --cplusplus --quiet @files`);
 		$self->log($out) if $out;
 	}
 }
